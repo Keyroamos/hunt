@@ -144,11 +144,10 @@ const ForgotPassword = () => {
                     </div>
                 </div>
 
-                {/* Additional Help */}
                 <div className="mt-6 text-center">
                     <p className="text-sm text-gray-600">
                         Need help?{' '}
-                        <a href="mailto:support@househunt.co.ke" className="text-orange-600 hover:text-orange-700 font-semibold">
+                        <a href="mailto:info@househunt.co.ke" className="text-orange-600 hover:text-orange-700 font-semibold">
                             Contact Support
                         </a>
                     </p>

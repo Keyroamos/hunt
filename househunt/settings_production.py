@@ -69,6 +69,7 @@ SERVER_EMAIL = 'househuntafrica@gmail.com'
 
 # Frontend URL
 FRONTEND_URL = 'https://househunt.co.ke'
+SUPPORT_EMAIL = 'info@househunt.co.ke'
 
 # Logging
 LOGGING = {

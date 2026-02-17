@@ -176,7 +176,7 @@ const Terms = () => {
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">13. Contact Us</h2>
                             <p>For questions about these Terms, contact us at:</p>
                             <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                <p className="font-medium text-gray-900">support@househunt.co.ke</p>
+                                <p className="font-medium text-gray-900">info@househunt.co.ke</p>
                             </div>
                         </section>
 

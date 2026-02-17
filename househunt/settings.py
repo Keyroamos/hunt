@@ -190,6 +190,7 @@ SERVER_EMAIL = 'househuntafrica@gmail.com'
 
 # Frontend URL for password reset links
 FRONTEND_URL = 'http://localhost:3000' if DEBUG else 'https://househunt.co.ke'
+SUPPORT_EMAIL = 'info@househunt.co.ke'
 
 # Logging for debugging
 LOGGING = {

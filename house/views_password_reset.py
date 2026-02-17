@@ -34,10 +34,9 @@ def request_password_reset(request):
     try:
         user = User.objects.get(email__iexact=email)
     except User.DoesNotExist:
-        # For security, don't reveal if email exists or not
         return Response(
-            {'message': 'If an account with that email exists, a password reset link has been sent.'},
-            status=status.HTTP_200_OK
+            {'error': 'No account found with this email address.'},
+            status=status.HTTP_404_NOT_FOUND
         )
     
     # Generate password reset token
@@ -52,7 +51,7 @@ def request_password_reset(request):
         'user': user,
         'reset_link': reset_link,
         'site_name': 'House Hunt',
-        'support_email': settings.EMAIL_HOST_USER,
+        'support_email': getattr(settings, 'SUPPORT_EMAIL', 'info@househunt.co.ke'),
     }
     
     # Render HTML email
@@ -132,9 +131,10 @@ def reset_password_confirm(request):
     
     # Send confirmation email
     try:
+        support_email = getattr(settings, 'SUPPORT_EMAIL', 'info@househunt.co.ke')
         send_mail(
             subject='Password Reset Successful - House Hunt',
-            message=f'Hello {user.first_name or user.email},\n\nYour password has been successfully reset.\n\nIf you did not make this change, please contact us immediately at {settings.EMAIL_HOST_USER}.\n\nBest regards,\nHouse Hunt Team',
+            message=f'Hello {user.first_name or user.email},\n\nYour password has been successfully reset.\n\nIf you did not make this change, please contact us immediately at {support_email}.\n\nBest regards,\nHouse Hunt Team',
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
             fail_silently=True,
