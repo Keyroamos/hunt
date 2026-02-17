@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Property, PropertyImage, Payment, VerificationDocument, Favorite, Inquiry
+from .models import Property, PropertyImage, Payment, VerificationDocument, Favorite, Inquiry, Message
 import re
 
 User = get_user_model()
@@ -133,9 +133,11 @@ class PropertySerializer(serializers.ModelSerializer):
     has_access = serializers.SerializerMethodField()
 
     def get_contact_phone(self, obj):
-        user = self.context.get('request').user
-        if not user.is_authenticated:
+        request = self.context.get('request')
+        if not request or not request.user or not request.user.is_authenticated:
             return None
+        
+        user = request.user
         if user == obj.owner:
             return obj.contact_phone
         # Check if paid (Global Access)
@@ -144,9 +146,11 @@ class PropertySerializer(serializers.ModelSerializer):
         return None 
 
     def get_has_access(self, obj):
-        user = self.context.get('request').user
-        if not user.is_authenticated:
+        request = self.context.get('request')
+        if not request or not request.user or not request.user.is_authenticated:
             return False
+            
+        user = request.user
         if user == obj.owner:
             return True
         # Global Access Check
@@ -203,8 +207,6 @@ class FavoriteSerializer(serializers.ModelSerializer):
         fields = ['id', 'property', 'created_at']
         read_only_fields = ['id', 'created_at']
 
-
-from .models import Property, PropertyImage, Payment, VerificationDocument, Favorite, Inquiry, Message
 
 # ... existing code ...
 

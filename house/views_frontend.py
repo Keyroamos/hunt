@@ -43,12 +43,17 @@ def serve_spa(request, path=''):
                     
                     # Prepare Data
                     title = f"{property_obj.title} | House Hunt Kenya"
+                    
                     # Create a nice description with price and location
-                    price_formatted = f"KES {property_obj.rent_amount:,.0f}" if hasattr(property_obj, 'rent_amount') else f"KES {property_obj.rent:,.0f}"
-                    desc = f"{property_obj.property_type.title()} in {property_obj.location} for {price_formatted}/month. {property_obj.description[:100]}..."
+                    # Use the correct model field name: rent_per_month
+                    price = getattr(property_obj, 'rent_per_month', 0)
+                    price_formatted = f"KES {price:,.0f}"
+                    desc = f"{property_obj.property_type.replace('_', ' ').title()} in {property_obj.location} for {price_formatted}/month. {property_obj.description[:150]}..."
                     
                     # Image Logic
-                    image_url = "https://house.bdmis.co.ke/icon-512.png"
+                    production_domain = "https://househunt.co.ke"
+                    image_url = f"{production_domain}/icon-512.png"
+                    
                     # Check for primary image first, then any image
                     prop_image = property_obj.images.filter(is_primary=True).first() or property_obj.images.first()
                     
@@ -57,15 +62,14 @@ def serve_spa(request, path=''):
                         if prop_image.image.url.startswith('http'):
                             image_url = prop_image.image.url
                         else:
-                            image_url = f"https://house.bdmis.co.ke{prop_image.image.url}"
+                            image_url = f"{production_domain}{prop_image.image.url}"
 
                     # Perform Replacements
-                    # We look for the default strings we added in index.html
                     default_title = "House Hunt Kenya - Find Your Perfect Home"
                     default_desc = "Find and list rental properties in Kenya. Connect with landlords and tenants seamlessly."
-                    default_image = "https://house.bdmis.co.ke/icon-512.png"
-                    default_url = "https://house.bdmis.co.ke/"
-                    current_url = f"https://house.bdmis.co.ke/{path}"
+                    default_image = "https://househunt.co.ke/icon-512.png"
+                    default_url = "https://househunt.co.ke/"
+                    current_url = f"https://househunt.co.ke/{path}"
 
                     # Replace OG Tags
                     html = html.replace(f'content="{default_title}"', f'content="{title}"')
@@ -80,7 +84,10 @@ def serve_spa(request, path=''):
             # If property not found or bad ID, just serve default HTML
             pass
         except Exception as e:
-            print(f"Error injecting meta tags: {e}")
+            # Log the error but don't crash
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error injecting meta tags: {e}")
             pass
 
     return HttpResponse(html)

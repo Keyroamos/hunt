@@ -144,15 +144,21 @@ class PropertyViewSet(viewsets.ModelViewSet):
         # Filter by price range
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
-        if min_price:
-            queryset = queryset.filter(rent_per_month__gte=min_price)
-        if max_price:
-            queryset = queryset.filter(rent_per_month__lte=max_price)
+        try:
+            if min_price:
+                queryset = queryset.filter(rent_per_month__gte=float(min_price))
+            if max_price:
+                queryset = queryset.filter(rent_per_month__lte=float(max_price))
+        except (ValueError, TypeError):
+            pass
 
         # Filter by number of bedrooms
         min_bedrooms = self.request.query_params.get('bedrooms')
-        if min_bedrooms:
-            queryset = queryset.filter(bedrooms__gte=min_bedrooms)
+        try:
+            if min_bedrooms:
+                queryset = queryset.filter(bedrooms__gte=int(min_bedrooms))
+        except (ValueError, TypeError):
+            pass
 
         # Filter by verified owners only
         verified_only = self.request.query_params.get('verified_only')
@@ -175,6 +181,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         if newly_listed in ('true', '1', 'True'):
             two_weeks_ago = timezone.now() - timezone.timedelta(days=14)
             queryset = queryset.filter(created_at__gte=two_weeks_ago)
+
+        # Optimization: prefetch images and select related owner to avoid N+1
+        queryset = queryset.select_related('owner').prefetch_related('images')
 
         # Order: promoted first, newest listings next
         queryset = queryset.order_by('-is_promoted', '-created_at')
@@ -396,19 +405,19 @@ class InquiryViewSet(viewsets.ModelViewSet):
         queryset = Inquiry.objects.all()
         
         if user.is_staff:
-            return queryset
-            
-        # Users see inquiries where they are the creator OR the property owner
-        return queryset.filter(
-            Q(user=user) | Q(property__owner=user)
-        )
+            queryset = Inquiry.objects.all()
+        else:
+            # Users see inquiries where they are the creator OR the property owner
+            queryset = Inquiry.objects.filter(
+                Q(user=user) | Q(property__owner=user)
+            )
 
         # Filter by property if provided
         property_id = self.request.query_params.get('property')
         if property_id:
             queryset = queryset.filter(property_id=property_id)
             
-        return queryset
+        return queryset.select_related('property', 'user', 'property__owner').prefetch_related('messages')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
