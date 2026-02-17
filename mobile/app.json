@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "House Hunt Kenya",
+    "slug": "househunt-kenya",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f97316"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.househunt.kenya"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#f97316"
+      },
+      "package": "com.househunt.kenya"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
+

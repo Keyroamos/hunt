@@ -1,0 +1,102 @@
+{
+    "name": "House Hunt - Find Your Perfect Home",
+    "short_name": "House Hunt",
+    "description": "Find and list rental properties in Kenya. Connect with landlords and tenants seamlessly.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#f97316",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "categories": [
+        "lifestyle",
+        "business"
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshot-mobile.png",
+            "sizes": "540x720",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot-desktop.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Explore Properties",
+            "short_name": "Explore",
+            "description": "Browse available properties",
+            "url": "/explore",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "My Dashboard",
+            "short_name": "Dashboard",
+            "description": "Access your dashboard",
+            "url": "/owner/dashboard",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "My Chats",
+            "short_name": "Chats",
+            "description": "View your conversations",
+            "url": "/user/dashboard",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "share_target": {
+        "action": "/share",
+        "method": "GET",
+        "enctype": "application/x-www-form-urlencoded",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url"
+        }
+    }
+}
