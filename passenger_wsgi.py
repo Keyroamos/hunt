@@ -21,7 +21,7 @@ except ImportError:
 CPANEL_USERNAME = 'your_cpanel_username' 
 project_home = f'/home/{CPANEL_USERNAME}/public_html/hunthouse'
 
-# Add your project directory to the sys.path
+# Add your project directory to the sys.pa
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
 
