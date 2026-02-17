@@ -173,24 +173,38 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYSTACK_SECRET_KEY = 'sk_live_54e00e911e78f870a98d7c81fbc5b5ae9ab57098'
 
 # Email Configuration
-# Use Console Backend for local development (DEBUG=True), SMTP for production
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# Always use SMTP for now so the user can test real inbox delivery
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtp.hmailplus.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = 'support@househunt.co.ke'
-# Use environment variable for password, fallback strictly for dev if needed but safer to use .env
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'Hunt@7878.')
+EMAIL_HOST_USER = 'househuntafrica@gmail.com'
+# App password provided by user: "dsek uwok vdpz welk"
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dsek uwok vdpz welk')
 
-DEFAULT_FROM_EMAIL = 'House Hunt Support <support@househunt.co.ke>'
-SERVER_EMAIL = 'support@househunt.co.ke'
+DEFAULT_FROM_EMAIL = 'House Hunt Kenya <househuntafrica@gmail.com>'
+SERVER_EMAIL = 'househuntafrica@gmail.com'
 
 # Frontend URL for password reset links
 FRONTEND_URL = 'http://localhost:5173' if DEBUG else 'https://househunt.co.ke'
+
+# Logging for debugging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+    },
+    'root': {
+        'handlers': ['file'],
+        'level': 'INFO',
+    },
+}
 

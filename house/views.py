@@ -35,6 +35,19 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"Registration attempt with data: {request.data}")
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            logger.error(f"Registration validation failed: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        response = super().create(request, *args, **kwargs)
+        logger.info(f"Registration successful for user: {request.data.get('email')}")
+        return response
+
     @action(detail=False, methods=['get', 'patch', 'put'])
     def me(self, request):
         if not request.user.is_authenticated:

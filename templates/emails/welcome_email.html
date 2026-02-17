@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to House Hunt Kenya</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #f97316;
+            /* Orange-500 from Tailwind */
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .welcome-text {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            color: #f97316;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #f97316;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .footer {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .social-links {
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            color: #f97316;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>House Hunt Kenya</h1>
+        </div>
+        <div class="content">
+            <p class="welcome-text">Jambo {{ user.first_name|default:user.username }},</p>
+            <p>Welcome to <strong>House Hunt Kenya</strong>! We're thrilled to have you join our community.</p>
+
+            <p>Whether you're looking for your next dream home or listing a property, we've made the process seamless,
+                secure, and transparent.</p>
+
+            <div class="features">
+                <div class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span><strong>Verified Listings:</strong> Shop with confidence knowing our listings are
+                        vetted.</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span><strong>Direct Contact:</strong> Connect directly with landlords and agents.</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span><strong>Real-time Notifications:</strong> Be the first to know when a new property matches
+                        your preferences.</span>
+                </div>
+            </div>
+
+            <p>Ready to get started?</p>
+            <a href="{{ site_url }}" class="cta-button">Explore Properties</a>
+
+            <p style="margin-top: 30px;">If you have any questions, feel free to reply to this email or visit our
+                support center.</p>
+
+            <p>Happy hunting!<br>The House Hunt Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 House Hunt Kenya. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">Twitter</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -57,15 +57,15 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.hmailplus.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'support@househunt.co.ke'
-# Use environment variable for password
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'House Hunt Support <support@househunt.co.ke>'
-SERVER_EMAIL = 'support@househunt.co.ke'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'househuntafrica@gmail.com'
+# Use environment variable for password if available, else fallback to provided app password
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'dsek uwok vdpz welk')
+DEFAULT_FROM_EMAIL = 'House Hunt Kenya <househuntafrica@gmail.com>'
+SERVER_EMAIL = 'househuntafrica@gmail.com'
 
 # Frontend URL
 FRONTEND_URL = 'https://househunt.co.ke'
