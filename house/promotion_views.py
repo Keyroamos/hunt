@@ -48,7 +48,8 @@ def promote_property_action(self, request, pk=None):
         }
         url = 'https://api.paystack.co/charge'
     else:
-        callback_url = f"http://localhost:5173/owner/dashboard?promote=callback&property_id={property.id}"
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
+        callback_url = f"{frontend_url}/owner/dashboard?promote=callback&property_id={property.id}"
         data = {
             "email": email,
             "amount": amount * 100,

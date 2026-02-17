@@ -621,7 +621,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
             url = 'https://api.paystack.co/charge'
         else:
             # Callback to frontend dashboard with param
-            callback_url = "http://localhost:5173/owner/dashboard?verify=callback" 
+            frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
+            callback_url = f"{frontend_url}/owner/dashboard?verify=callback"
             
             data = {
                 "email": email,
