@@ -16,6 +16,10 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv(BASE_DIR / '.env')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -98,12 +102,21 @@ WSGI_APPLICATION = 'househunt.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Use Supabase Database (Postgres) if DATABASE_URL is provided, otherwise fallback to SQLite
+import dj_database_url
+database_url = os.environ.get('DATABASE_URL')
+
+if database_url and '[PASSWORD]' not in database_url:
+    DATABASES = {
+        'default': dj_database_url.config(default=database_url, conn_max_age=600)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -145,6 +158,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Supabase Storage Configuration
+SUPABASE_URL = os.environ.get('SUPABASE_URL')
+SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
+
+if SUPABASE_URL and SUPABASE_KEY:
+    DEFAULT_FILE_STORAGE = 'house.storage.SupabaseStorage'
+    # The bucket name can be customized via environment variable
+    SUPABASE_STORAGE_BUCKET = os.environ.get('SUPABASE_STORAGE_BUCKET', 'media')
 
 # REST Framework Settings
 REST_FRAMEWORK = {

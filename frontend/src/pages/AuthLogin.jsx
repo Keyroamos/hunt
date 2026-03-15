@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Home, Mail, Lock, LogIn } from 'lucide-react'
 import { authAPI } from '../utils/api'
+import { supabase } from '../utils/supabase'
+
 
 const AuthLogin = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +20,15 @@ const AuthLogin = () => {
     setIsLoading(true)
     setError('')
     try {
+      // 1. Sign in with Supabase
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+
+      if (authError) throw authError
+
+      // 2. Sign in to Django backend to get session token
       const { data } = await authAPI.login(formData.email, formData.password)
       localStorage.setItem('access_token', data.access)
       localStorage.setItem('refresh_token', data.refresh)
@@ -29,6 +40,7 @@ const AuthLogin = () => {
       if (user.user_type !== formData.userType) {
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
+        await supabase.auth.signOut()
         setError(`You found an account but it is registered as a ${user.user_type === 'hunter' ? 'House Hunter' : 'Landlord'}, not a ${formData.userType === 'hunter' ? 'House Hunter' : 'Landlord'}.`)
         setIsLoading(false)
         return
@@ -42,8 +54,8 @@ const AuthLogin = () => {
         navigate('/explore')
       }
     } catch (err) {
-      console.error(err)
-      setError('Invalid email or password')
+      console.error('Login error:', err)
+      setError(err.message || 'Invalid email or password')
     } finally {
       setIsLoading(false)
     }

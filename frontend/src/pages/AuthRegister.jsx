@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Home, Mail, Lock, User, Phone, UserPlus } from 'lucide-react'
 import { authAPI } from '../utils/api'
+import { supabase } from '../utils/supabase'
+
 
 const AuthRegister = () => {
   const [formData, setFormData] = useState({
@@ -31,6 +33,23 @@ const AuthRegister = () => {
     setIsLoading(true)
     setError('')
     try {
+      // 1. Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            username: formData.email,
+            full_name: formData.name,
+            phone: formData.phone,
+            user_type: formData.userType,
+          }
+        }
+      })
+
+      if (authError) throw authError
+
+      // 2. Also sync to our custom API if needed (optional if trigger in SQL is set)
       await authAPI.register({
         email: formData.email,
         username: formData.email,
@@ -38,15 +57,14 @@ const AuthRegister = () => {
         user_type: formData.userType,
         full_name: formData.name,
         phone: formData.phone,
+        supabase_id: authData.user.id
       })
-      setSuccessMessage('Account created successfully! Please sign in.')
-      setTimeout(() => navigate('/login'), 1500)
+
+      setSuccessMessage('Account created successfully! Please check your email for verification.')
+      setTimeout(() => navigate('/login'), 2000)
     } catch (err) {
-      const message =
-        err.response?.data?.detail ||
-        err.response?.data?.email?.[0] ||
-        err.response?.data?.username?.[0] ||
-        'Unable to create account. Please try again.'
+      console.error('Registration error:', err)
+      const message = err.message || 'Unable to create account. Please try again.'
       setError(message)
     } finally {
       setIsLoading(false)
